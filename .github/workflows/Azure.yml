@@ -20,9 +20,9 @@ jobs:
     name: Build and Deploy
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@main
     - name: Set up Python ${{ env.PYTHON_VERSION }}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@main
       with:
         python-version: ${{ env.PYTHON_VERSION }}
     - name: Install dependencies
