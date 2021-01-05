@@ -28,7 +28,6 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az deployment group create \
-            --name PythonFunctions \
-            --resource-group GitHubActions \
-            --template-file serverless.yml \
+            az deployment group create --name PythonFunctions --resource-group GitHubActions --template-file serverless.yml
+           
+            az functionapp create --resource-group GitHubActions -rg --consumption-plan-location westeurope --runtime python --runtime-version 3.8 --functions-version 3 --name PythonFunction --storage-account storagearmgithub --os-type linux
