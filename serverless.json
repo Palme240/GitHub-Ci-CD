@@ -24,16 +24,17 @@
           ],
           "route": "Azure_function",
           "authLevel": "anonymous"
-  {
-    "type": "Microsoft.Storage/storageAccounts",
-    "name": "[variables('storageAccountName')]",
-    "apiVersion": "2019-06-01",
-    "location": "[resourceGroup().location]",
-    "kind": "StorageV2",
-    "sku": {
-        "name": "[parameters('storageAccountType')]"
+"appSettings": [
+    {
+        "name": "AzureWebJobsStorage",
+        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2019-06-01').keys[0].value)]"
+    },
+    {
+        "name": "AzureWebJobsDashboard",
+        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2019-06-01').keys[0].value)]"
     }
-}
+]
+          
         }
       ]
     }
