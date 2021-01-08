@@ -2,7 +2,7 @@ name: AzureARMtemplateDeploy a python app
 
 env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
-  AZURE_FUNCTIONAPP_NAME: DeployCodeFromGitHub # set this to your application's name
+  AZURE_FUNCTIONAPP_NAME: GitHubActionsFunction # set this to your application's name
   PYTHON_VERSION: '3.8'                 # set this to the python version to use (supports 3.6, 3.7, 3.8)
 
 # Controls when the action will run. 
@@ -38,6 +38,16 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+     
+      - name: Deploy ARM Template
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az deployment group create --name PythonFunctions --resource-group GitHubActions --template-file serverless.json
+           
+            az functionapp create --resource-group GitHubActionsFunction -rg --consumption-plan-location westeurope --runtime python --runtime-version 3.8 --functions-version 3 --name PythonFunction --storage-account storagearmgithub --os-type linux
+
+      
       - name: 'Run Azure Functions Action'
         uses: Azure/functions-action@v1
         id: fa
