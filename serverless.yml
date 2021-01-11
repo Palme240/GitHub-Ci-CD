@@ -15,6 +15,3 @@ functions:
     events:
      - http: true
        authLevel: anonymous
-     - http: true
-       direction: out
-          name: res
