@@ -4,9 +4,6 @@ provider:
   name: azure
   runtime: python3.7
   location: westeurope
-
-plugins:
-  serverless plugin install --name serverless-azure-functions
   
 functions:
   function1:
