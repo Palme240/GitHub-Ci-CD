@@ -4,7 +4,10 @@ provider:
   name: azure
   runtime: python3.7
   location: westeurope
-      
+
+plugins:
+  - serverless-azure-functions
+  
 functions:
   function1:
     handler: Azure_function.pipeline_main
