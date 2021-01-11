@@ -6,7 +6,7 @@ provider:
   location: westeurope
 
 plugins:
-  - serverless-azure-functions
+  serverless plugin install --name serverless-azure-functions
   
 functions:
   function1:
