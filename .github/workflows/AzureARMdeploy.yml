@@ -37,3 +37,6 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           resourceGroupName: GitHubARM
           templateLocation: azuredeploy.json
+    
+      - name: Serverless
+        uses: serverless/github-action@master
