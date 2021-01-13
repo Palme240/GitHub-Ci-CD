@@ -1,10 +1,5 @@
 name: AzureARMtemplateDeploy a python app
 
-env:
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
-  AZURE_FUNCTIONAPP_NAME: GitHubActionsFunction # set this to your application's name
-  PYTHON_VERSION: '3.7'                 # set this to the python version to use (supports 3.6, 3.7, 3.8)
-
 # Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
@@ -20,6 +15,7 @@ jobs:
     build-and-deploy:
       runs-on: ubuntu-latest
       steps:
+
       - name: Login To Azure
         uses: azure/login@v1.1
         with:
@@ -27,10 +23,12 @@ jobs:
 
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@main
+        
       - name: Setup Python ${{ env.PYTHON_VERSION }} Environment
         uses: actions/setup-python@v1
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+          
       - name: 'Resolve Project Dependencies Using Pip'
         shell: bash
         run: |
@@ -38,12 +36,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt --target=".python_packages/lib/site-packages"
           popd
-
-      - name: 'Run Azure Functions Action'
-        uses: Azure/functions-action@v1
-        id: fa
+          
+      - name: Run ARM deploy
+        uses: azure/arm-deploy@v1
         with:
-          app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-          package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+          template: ./azuredeploy.json    
+     
+
+
       
