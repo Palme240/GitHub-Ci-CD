@@ -36,7 +36,7 @@
         }
     },
     "variables": {
-        "appServicePlanName": "[ServiceAppLinux]",
+        "appServicePlanName": "ServiceAppLinux",
         "appInsightsName": "[parameters('functionAppName')]",
         "storageAccountid": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
     },
