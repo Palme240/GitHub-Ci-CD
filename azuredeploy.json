@@ -4,14 +4,14 @@
     "parameters": {
         "functionAppName": {
             "type": "String",
-            "defaultValue": "[concat('funcapp-', uniqueString(resourceGroup().id))]",
+            "defaultValue": "FunctionAppGithub",
             "metadata": {
                 "description": "Name of the function app. <functionAppName>.azurewebsites.net"
             }
         },
         "storageAccountName": {
             "type": "String",
-            "defaultValue": "[concat('funcapp', uniqueString(resourceGroup().id))]",
+            "defaultValue": "StorageGitHub",
             "metadata": {
                 "description": "Storage account for the function app"
             }
@@ -22,21 +22,21 @@
         },
         "linuxFxVersion": {
             "type": "String",
-            "defaultValue": "Python|3.8",
+            "defaultValue": "Python|3.7",
             "metadata": {
                 "description": "Linux App Framework and version"
             }
         },
         "location": {
             "type": "string",
-            "defaultValue": "[resourceGroup().location]",
+            "defaultValue": "westEurope",
             "metadata": {
                 "description": "Location for all resources."
             }
         }
     },
     "variables": {
-        "appServicePlanName": "[concat('appServicePlan-', parameters('functionAppName'))]",
+        "appServicePlanName": "[ServiceAppLinux]",
         "appInsightsName": "[parameters('functionAppName')]",
         "storageAccountid": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
     },
