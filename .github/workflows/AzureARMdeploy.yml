@@ -40,7 +40,10 @@ jobs:
       - name: Run ARM deploy
         uses: azure/arm-deploy@v1
         with:
-          template: azuredeploy.json
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+          resourceGroupName: ${{ secrets.AZURE_RG }}
+          template: ./azuredeploy.json
+          parameters: storageAccountType=Standard_LRS
           region: westeurope    
      
 
