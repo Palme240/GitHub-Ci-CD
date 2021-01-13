@@ -1,130 +1,124 @@
 {
-  "$schema": "http://schemas.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "appName": {
+    "functionStorageName": {
       "type": "string",
       "metadata": {
-        "description": "GithubAction"
+        "description": "Name of the storage."
       }
     },
-    "storageAccountType": {
+    "functionName": {
       "type": "string",
-      "defaultValue": "Standard_LRS",
-      "allowedValues": [
-        "Standard_LRS",
-        "Standard_GRS",
-        "Standard_ZRS",
-        "Premium_LRS"
-      ],
       "metadata": {
-        "description": "Storage Account type"
+      "description": "Name of the function."
       }
     },
-    "repoURL": {
+    "functionAppServicePlanName":{
       "type": "string",
-      "defaultValue": "https://github.com/sadaf421/azure-arm-templates",
       "metadata": {
-        "description": "The URL for the GitHub repository that contains the project to deploy."
+      "description": "Name of the app service plan."
       }
     },
-    "branch": {
+    "functionPackageUri": {
       "type": "string",
-      "defaultValue": "master",
       "metadata": {
-        "description": "The branch of the GitHub repository to use."
-      }
-    },
-    "location": {
-      "type": "string",
-      "defaultValue": "[resourceGroup().location]",
-      "metadata": {
-        "description": "Location for all resources."
+          "description": "Uri to function package."
       }
     }
   },
-  "variables": {
-    "functionAppName": "[parameters('appName')]",
-    "hostingPlanName": "[concat(parameters('appName'), '-plan')]",
-    "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'functions')]"
+  "variables":
+  {
+    "functionStorageAccountId": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', parameters('functionStorageName'))]"
   },
   "resources": [
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[variables('storageAccountName')]",
-      "apiVersion": "2015-06-15",
-      "location": "[parameters('location')]",
+      "name": "[parameters('functionStorageName')]",
+      "apiVersion": "2019-04-01",
+      "location": "[resourceGroup().location]",
+      "kind": "Storage",
+      "sku": {
+        "name": "Standard_LRS"
+      },
       "properties": {
-        "accountType": "[parameters('storageAccountType')]"
+        "supportsHttpsTrafficOnly": true
       }
     },
     {
-        "type":"Microsoft.Web/serverfarms",
-        "apiVersion":"2016-09-01",
-        "name":"[variables('hostingPlanName')]",
-        "location":"[parameters('location')]",
-        "properties":{  
-            "name":"[variables('hostingPlanName')]",
-            "computeMode":"Dynamic"
-        },
-        "sku":{  
-            "name":"Y1",
-            "tier":"Dynamic",
-            "size":"Y1",
-            "family":"Y",
-            "capacity":0
-        }
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2019-08-01",
+      "name": "[parameters('functionAppServicePlanName')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Y1",
+        "tier": "Dynamic"
+      },
+      "properties": {
+        "name": "[parameters('functionAppServicePlanName')]",
+        "computeMode": "Dynamic"
+      }
     },
     {
-      "apiVersion": "2015-08-01",
+      "apiVersion": "2019-08-01",
       "type": "Microsoft.Web/sites",
-      "name": "[variables('functionAppName')]",
-      "location": "[parameters('location')]",
+      "name": "[parameters('functionName')]",
+      "location": "[resourceGroup().location]",
+      "identity": {
+        "type": "SystemAssigned"
+      },
       "kind": "functionapp",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('functionAppServicePlanName'))]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('functionStorageName'))]"
+      ],
       "properties": {
-        "name": "[variables('functionAppName')]",
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
-        "hostingEnvironment": "",
-        "clientAffinityEnabled": false,
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('functionAppServicePlanName'))]",
         "siteConfig": {
-          
-          "cors": {
-            "allowedOrigins": [
-              "*"
-            ]
-          },
           "appSettings": [
             {
-              "name": "FUNCTIONS_EXTENSION_VERSION",
-              "value": "~1"
+              "name": "AzureWebJobsDashboard",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('functionStorageName'), ';AccountKey=', listKeys(variables('functionStorageAccountId'),'2015-05-01-preview').key1)]"
             },
             {
               "name": "AzureWebJobsStorage",
-              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2015-05-01-preview').key1,';')]"
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('functionStorageName'), ';AccountKey=', listKeys(variables('functionStorageAccountId'),'2015-05-01-preview').key1)]"
             },
             {
-              "name": "AzureWebJobsDashboard",
-              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2015-05-01-preview').key1,';')]"
+              "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('functionStorageName'), ';AccountKey=', listKeys(variables('functionStorageAccountId'),'2015-05-01-preview').key1)]"
+            },
+            {
+              "name": "WEBSITE_CONTENTSHARE",
+              "value": "[toLower(parameters('functionName'))]"
+            },
+            {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~2"
+            },
+            {
+              "name": "WEBSITE_NODE_DEFAULT_VERSION",
+              "value": "8.11.1"
+            },
+ 
+            {
+              "name": "FUNCTIONS_WORKER_RUNTIME",
+              "value": "dotnet"
             }
           ]
         }
       },
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
-      ],
       "resources": [
         {
+          "name": "MSDeploy",
+          "type": "extensions",
+          "location": "[resourceGroup().location]",
           "apiVersion": "2015-08-01",
-          "name": "web",
-          "type": "sourcecontrols",
           "dependsOn": [
-            "[resourceId('Microsoft.Web/Sites', variables('functionAppName'))]"
+            "[resourceId('Microsoft.Web/sites', parameters('functionName'))]"
           ],
           "properties": {
-            "RepoUrl": "[parameters('repoURL')]",
-            "branch": "[parameters('branch')]",
-            "IsManualIntegration": true
+            "packageUri": "[concat(parameters('functionPackageUri'))]"
           }
         }
       ]
