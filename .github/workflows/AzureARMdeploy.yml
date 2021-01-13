@@ -37,15 +37,7 @@ jobs:
           pip install -r requirements.txt --target=".python_packages/lib/site-packages"
           popd
           
-      - name: Run ARM deploy
-        uses: azure/arm-deploy@v1
+      - uses: whiteducksoftware/azure-arm-action@v3.2
         with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-          resourceGroupName: ${{ secrets.AZURE_RG }}
-          template: ./azuredeploy.json
-          parameters: storageAccountType=Standard_LRS
-          region: westeurope    
-     
-
-
-      
+          resourceGroupName: GitHubARM
+          templateLocation: azuredeploy.json
