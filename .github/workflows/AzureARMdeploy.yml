@@ -16,11 +16,6 @@ jobs:
       runs-on: ubuntu-latest
       steps:
 
-      - name: Login To Azure
-        uses: azure/login@v1.1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@main
         
@@ -39,5 +34,6 @@ jobs:
           
       - uses: whiteducksoftware/azure-arm-action@v3.2
         with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
           resourceGroupName: GitHubARM
           templateLocation: azuredeploy.json
