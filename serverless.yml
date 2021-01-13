@@ -8,7 +8,11 @@ provider:
 functions:
   function1:
     handler: Azure_function.pipeline_main
-    runtime: python3.7
     events:
      - http: true
-       authLevel: anonymous
+       x-azure-settings:
+          authLevel : anonymous
+     - http: true
+       x-azure-settings:
+          direction: out
+          name: res
