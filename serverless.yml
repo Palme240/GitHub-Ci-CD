@@ -9,7 +9,7 @@ plugins:
   - serverless-azure-functions
   
 functions:
-  function1:
+  GitHubFunction:
     handler: Azure_function.pipeline_main
     events:
      - http: true
