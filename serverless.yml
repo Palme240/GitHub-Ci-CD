@@ -2,7 +2,7 @@ service: GitHubActions
 
 provider:
   name: azure
-  runtime: python3.7
+  runtime: python3.6
   location: westeurope
   
 plugins:
