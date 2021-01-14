@@ -1,8 +1,20 @@
-def pipeline_main():
-
-    print("Hello pipeline world.")
-
-
-if __name__ == "__main__":
-
-    pipeline_main()
+{
+    "scriptFile": "__init__.py",
+    "bindings": [
+        {
+            "authLevel": "anonymous",
+            "type": "httpTrigger",
+            "direction": "in",
+            "name": "req",
+            "methods": [
+                "get",
+                "post"
+            ]
+        },
+        {
+            "type": "http",
+            "direction": "out",
+            "name": "$return"
+        }
+    ]
+}
