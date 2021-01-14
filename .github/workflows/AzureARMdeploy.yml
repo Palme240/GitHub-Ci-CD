@@ -45,7 +45,7 @@ jobs:
           templateLocation: azuredeploy.json
     
       - name: Serverless
-        uses: serverless/github-action@master
+        uses: serverless/github-action@main
         
       - name: Login to Azure
         uses: azure/login@v1
