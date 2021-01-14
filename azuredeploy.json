@@ -40,6 +40,24 @@
         "appInsightsName": "[parameters('functionAppName')]",
         "storageAccountid": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
     },
+    "functions": [
+        {
+            "namespace": "armin30",
+            "members": {
+                "uniqueResourceName": {
+                    "parameters": [
+                        {
+                        "name": "prefix",
+                        "type": "string"
+                        }
+                    ],
+                    "output": {
+                        "type": "string",
+                        "value": "[concat(toLower(parameters('prefix')), uniqueString(resourceGroup().id))]"
+                    }
+                }
+            }
+        }
     "resources": [
         {
             "type": "Microsoft.Web/sites",
