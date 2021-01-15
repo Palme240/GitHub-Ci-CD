@@ -44,7 +44,7 @@ jobs:
         with:
           deploymentName: GitHubActions-Deploy
           resourceGroupName: GitHubARM
-          template: azuredeploy.json
+          templateLocation: ./azuredeploy.json
     
       - name: Serverless
         uses: serverless/github-action@master
