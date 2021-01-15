@@ -39,11 +39,12 @@ jobs:
           npm i serverless --save-dev
           
       - name: Deploy Azure Resource Manager (ARM) Template
+        id: Deploy ARM
         uses: Azure/arm-deploy@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          deploymentName: GitHubActions-Deploy
           resourceGroupName: GitHubARM
-          templateLocation: azuredeploy.json
+          template: azuredeploy.json
     
       - name: Serverless
         uses: serverless/github-action@master
@@ -55,7 +56,7 @@ jobs:
         
       - name: 'Run Azure Functions Action'
         uses: Azure/functions-action@v1.1.8
-        id: fa
+        id: Deploy function code
         with:
           app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
