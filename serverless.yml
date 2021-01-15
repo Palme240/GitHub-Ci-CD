@@ -1,5 +1,11 @@
 service: GitHubActions
 
+package:
+     include:
+       - Azure_function.py
+     exclude:
+       - Azure_function.py
+
 provider:
   name: azure
   runtime: python3.6
@@ -11,3 +17,14 @@ plugins:
 functions:
   GitHubFunction:
     handler: Azure_function.pipeline_main
+    events:
+         - http: true
+           x-azure-settings:
+             authLevel : anonymous
+         - http: true
+           x-azure-settings:
+             direction: out
+             name: res
+custom:
+     webpackIncludeModules:
+       packagePath: 'serverless.yml'
