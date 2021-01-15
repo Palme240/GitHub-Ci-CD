@@ -1,11 +1,5 @@
 service: GitHubActions
 
-package:
-     include:
-       - Azure_function.py
-     exclude:
-       - Azure_function.py
-
 provider:
   name: azure
   runtime: python3.6
@@ -25,6 +19,3 @@ functions:
            x-azure-settings:
              direction: out
              name: res
-custom:
-     webpackIncludeModules:
-       packagePath: 'serverless.yml'
