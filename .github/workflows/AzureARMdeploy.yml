@@ -42,6 +42,7 @@ jobs:
         id: DeployARM
         uses: Azure/arm-deploy@v1
         with:
+          subscriptionId: 41fcdc9b-0389-4f48-a8a0-de2870a3212d
           deploymentName: GitHubActions-Deploy
           resourceGroupName: GitHubARM
           template: azuredeploy.json
