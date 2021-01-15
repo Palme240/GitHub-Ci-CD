@@ -39,7 +39,7 @@ jobs:
           npm i serverless --save-dev
           
       - name: Deploy Azure Resource Manager (ARM) Template
-        id: Deploy ARM
+        id: Deploy_ARM
         uses: Azure/arm-deploy@v1
         with:
           deploymentName: GitHubActions-Deploy
