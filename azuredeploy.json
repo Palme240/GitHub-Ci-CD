@@ -42,7 +42,7 @@
     },
     "functions": [
   {
-    "namespace": "contoso",
+    "namespace": "GitHubFunction",
     "members": {
       "uniqueName": {
         "parameters": [
