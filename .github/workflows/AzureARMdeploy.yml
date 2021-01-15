@@ -2,7 +2,7 @@ name: AzureARMtemplateDeploy a python app
 env:
   AZURE_FUNCTIONAPP_NAME: funcapp-jj4fl7pkmhioq
   AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
-  PYTHON_VERSION: '3.6'
+  PYTHON_VERSION: '3.8'
 
 # Controls when the action will run. 
 on:
@@ -31,14 +31,15 @@ jobs:
       - name: 'Resolve Project Dependencies Using Pip'
         shell: bash
         run: |
-          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          pushd ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
           python -m pip install --upgrade pip
           pip install -r requirements.txt --target=".python_packages/lib/site-packages"
           popd
           npm i serverless-azure-functions
           npm i serverless --save-dev
           
-      - uses: whiteducksoftware/azure-arm-action@v3.2
+      - name: Deploy Azure Resource Manager (ARM) Template
+        uses: Azure/arm-deploy@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           resourceGroupName: GitHubARM
