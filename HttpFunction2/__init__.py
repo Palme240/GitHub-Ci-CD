@@ -1,7 +1,7 @@
 import logging
 
 import azure.functions as func
-from ..SharedScripts import cosmos
+from ..sharedcode import cosmos
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
