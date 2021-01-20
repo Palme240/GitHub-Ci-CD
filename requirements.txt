@@ -1,2 +1,3 @@
 azure-functions
 os
+azure-cosmos
