@@ -2,8 +2,8 @@ import azure.cosmos.cosmos_client as cosmos_client
 
 def CountDocuments(database,container):
     config = {
-        'ENDPOINT': 'YOUR_COSMOSDB_ENDPOINT',
-        'PRIMARYKEY': 'YOUR_COSMOSDB_KEY',
+        'ENDPOINT': 'https://githubcosmosdb.documents.azure.com:443/',
+        'PRIMARYKEY': 'FwtYlGFoeim5Mus2qiDgOw78fXssQucT6zXY0Tdx2OGSJxZps0DwPUCRsDuq4YkuHamHVCt3q33tsREzvef5MA==',
         'DATABASE': database,
         'CONTAINER': container
     }
