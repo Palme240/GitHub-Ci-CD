@@ -12,12 +12,12 @@
       ]
     },
     {
-      "name": "cosmos",
+      "name": "githubcosmosdb",
       "type": "cosmosDB",
       "direction": "in",
       "ConnectionStringSetting": "CosmosDBConnection",
       "databaseName": "GitHubFunction",
-      "collectionName": "Client1",
+      "collectionName": "DBitem",
       "partitionKey": "/all"
     },
     {
