@@ -4,8 +4,8 @@ def CountDocuments(database,container):
     config = {
         'ENDPOINT': 'https://githubcosmosdb.documents.azure.com:443/',
         'PRIMARYKEY': 'FwtYlGFoeim5Mus2qiDgOw78fXssQucT6zXY0Tdx2OGSJxZps0DwPUCRsDuq4YkuHamHVCt3q33tsREzvef5MA==',
-        'DATABASE': database,
-        'CONTAINER': container
+        'DATABASE': GitHubFunction,
+        'CONTAINER': DBitem
     }
 
     # Initialize the Cosmos client
