@@ -35,6 +35,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt --target=".python_packages/lib/site-packages"
           popd
+          npm install @azure/cosmos
           npm i serverless-azure-functions
           npm i serverless --save-dev
           
