@@ -12,20 +12,9 @@
       ]
     },
     {
-      "name": "githubcosmosdb",
-      "type": "cosmosDB",
-      "direction": "in",
-      "ConnectionStringSetting": "CosmosDBConnection",
-      "databaseName": "GitHubFunction",
-      "collectionName": "DBitem",
-      "partitionKey": "/all"
-    },
-    {
       "type": "http",
       "direction": "out",
-      "name": "$return",
-      "dataType": "string" 
+      "name": "$return"
     }
-  ],
-  "disabled": false
+  ]
 }
