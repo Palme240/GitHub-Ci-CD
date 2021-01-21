@@ -3,6 +3,14 @@ import os
 
 url = os.environ['ACCOUNT_URI']
 key = os.environ['ACCOUNT_KEY']
+
+RES_GROUP=GitHubARM
+ACCT_NAME=githubcosmosdb
+
+export ACCOUNT_URI=$(az cosmosdb show --resource-group $RES_GROUP --name $ACCT_NAME --query documentEndpoint --output tsv)
+export ACCOUNT_KEY=$(az cosmosdb list-keys --resource-group $RES_GROUP --name $ACCT_NAME --query primaryMasterKey --output tsv)
+
+
 client = CosmosClient(url, credential=key)
 database_name = 'testDatabase'
 try:
