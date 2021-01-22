@@ -35,3 +35,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
              "Please pass database and container name on the query string or in the request body",
              status_code=400
         )
+    
+    return new ContentResult
+    {
+        StatusCode = 500,
+        Content = "Something went wrong"
+    };
