@@ -1,3 +1,4 @@
 azure-functions
 azure-cosmos
 requests==2.19.1
+azure-functions-worker
