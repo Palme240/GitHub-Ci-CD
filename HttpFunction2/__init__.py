@@ -36,8 +36,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
              status_code=400
         )
     
-    return new ContentResult
-    {
+    else:
+        return new ContentResult
+        (
         StatusCode = 500,
         Content = "Something went wrong"
-    };
+        )
